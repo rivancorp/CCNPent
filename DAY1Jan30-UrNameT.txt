@@ -1,6 +1,6 @@
 !@@@FOR CORE TAAS ONLY
 config t
-   hostname CORETAAS-12
+   hostname CORETAAS-_
    enable secret pass
    service password-encryption
    no logging console
@@ -15,19 +15,19 @@ config t
       exec-timeout 0 0
    Int Vlan 1
      no shutdown
-	 ip add 10.12.1.2 255.255.255.0
+	 ip add 10._.1.2 255.255.255.0
 	 description MGMTDATA
    Int Vlan 10
      no shutdown
-	 ip add 10.12.10.2 255.255.255.0
+	 ip add 10._.10.2 255.255.255.0
 	 description WIRELESS
    Int Vlan 50
      no shutdown
-	 ip add 10.12.50.2 255.255.255.0
+	 ip add 10._.50.2 255.255.255.0
 	 description IPCCTV
    Int Vlan 100
      no shutdown
-	 ip add 10.12.100.2 255.255.255.0
+	 ip add 10._.100.2 255.255.255.0
 	 description VOICEVLAN
 
 !@@@LeafSwitchONLY
@@ -48,22 +48,22 @@ config t
    Int Gi 0/1
      no shutdown
 	  no switchport
-	  ip add 10.M.M.4 255.255.255.0
+	  ip add 10._._.4 255.255.255.0
    Int Vlan 1
      no shutdown
-	 ip add 10.M.1.4 255.255.255.0
+	 ip add 10._.1.4 255.255.255.0
 	 description MGMTDATA
    Int Vlan 10
      no shutdown
-	 ip add 10.M.10.4 255.255.255.0
+	 ip add 10._.10.4 255.255.255.0
 	 description WIRELESS
    Int Vlan 50
      no shutdown
-	 ip add 10.M.50.4 255.255.255.0
+	 ip add 10._.50.4 255.255.255.0
 	 description IPCCTV
    Int Vlan 100
      no shutdown
-	 ip add 10.12.100.4 255.255.255.0
+	 ip add 10._.100.4 255.255.255.0
 	 description VOICEVLAN
 
 EncorLAB1: trunk it, etherchannit, allowit
