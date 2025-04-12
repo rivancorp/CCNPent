@@ -186,16 +186,16 @@ config t
 !!!CUCM ANALOG PHONES CONFIG
 configure terminal
 dial-peer voice 1 pots
-   destination-pattern m00
+   destination-pattern _00
    port 0/0/0
 dial-peer voice 2 pots
-   destination-pattern m01
+   destination-pattern _01
    port 0/0/1
 dial-peer voice 3 pots
-   destination-pattern m02
+   destination-pattern _02
    port 0/0/2
 dial-peer voice 4 pots
-   destination-pattern m03
+   destination-pattern _03
    port 0/0/3
 end
 
@@ -327,7 +327,7 @@ dial-peer voice 82 Voip
 @@@@@@
 !@@@EDGE ROUTE CONFIG
 config t
-   hostname EDGE12
+   hostname EDGEbaba-M
    enable secret pass
    service password-encryption
    no logging console
@@ -342,15 +342,15 @@ config t
       exec-timeout 0 0
    Int Gi 0/0/0
      description INSIDE
-     ip add 10.m.m.1 255.255.255.0
+     ip add 10._._.1 255.255.255.0
 	 no shutdown
    Int Gi 0/0/1
      description OUTSIDE
-	 ip add 200.0.0.m 255.255.255.0
+	 ip add 200.0.0._ 255.255.255.0
 	 no shutdown
    Int Loopback 0
      description VIRTUALIP
-	 ip add m.0.0.1 255.255.255.255
+	 ip add _.0.0.1 255.255.255.255
  end
 
 ! mULTI AREA OSPF CONFIGURATION:
@@ -525,18 +525,18 @@ SIP CONFIGURATION
 conf t
  voice service voip
   allow-connections h323 to sip
-          
+ !         
   allow-connections sip to h323
   allow-connections sip to sip
   supplementary-service h450.12
  sip
-   bind control source-interface _____0/0
-   bind media source-interface _____0/0
+   bind control source-interface fa 0/0
+   bind media source-interface fa 0/0
    registrar server expires max 600 min 60
 !
  voice register global
   mode cme
-  source-address 192.168._.1 port 5060
+  source-address 10.m.100.8 port 5060
   max-dn 12
   max-pool 12
   authenticate register
@@ -557,7 +557,7 @@ conf t
     username ____ password ____
     codec g711ulaw
 !
-  voice register pool 1
+  voice register pool 2
     id mac ____.____.____
     number 1 dn 2
     dtmf-relay sip-notify
