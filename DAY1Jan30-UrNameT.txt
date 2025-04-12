@@ -145,10 +145,10 @@ Int Fa 0/3
   switchport access vlan 100     
 Int Fa 0/5
   switchport mode access
-  switchport access vlan 100  
+  Switchport voice vlan 100
 Int Fa 0/7
   switchport mode access
-  switchport access vlan 100    
+  Switchport voice vlan 100
  end
 
 IP CAMERA needs MAC dhcp Reservation:
