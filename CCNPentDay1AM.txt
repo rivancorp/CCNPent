@@ -33,7 +33,7 @@ config t
 end
 
 !!!DAPAT 7 UNDER~~SCORE ANG NA EDIT MO  ( LINE 34 to 68 PASTE TO COREBABA SWITCH )
-!@@@LeafSwitchONLY
+!@@@CoreBABA:
 config t
    hostname COREbaba-~~
    enable secret pass
@@ -421,14 +421,30 @@ end
 
 EXAM READY DAY1: NAT, NTP, DHCP, and SSH
 NAT: NETWORK ADDRESS TRANSLATION: BIGAY INTERNET SA MUNDO NI CISCO.
+!
 config t
-ip route 0.0.0.0 0.0.0.0 200.0.0.1
-access-list 1 permit Any
-int gigabit 0/0/1
+int gi 0/0/1
 ip nat outside
-int gigabit 0/0/0
+int gi 0/0/0
 ip nat inside
-ip nat inside source list 1 interface gi 0/0/1 Overload
+!
+no ip access-list extended NATOSPF
+ip access-list extended NATOSPF
+deny ip 10.~~.0.0 0.0.255.255 10.K1.0.0 0.0.255.255
+deny ip 10.~~.0.0 0.0.255.255 10.K2.0.0 0.0.255.255
+deny ip 10.~~.0.0 0.0.255.255 10.K3.0.0 0.0.255.255
+deny ip 10.~~.0.0 0.0.255.255 10.K4.0.0 0.0.255.255
+deny ip 10.~~.0.0 0.0.255.255 10.K5.0.0 0.0.255.255
+deny ip 10.~~.0.0 0.0.255.255 10.K6.0.0 0.0.255.255
+deny ospy any any
+permit ip any any
+exit
+route-map POLNAT 10
+match ip address NATOSPF
+exit
+ip nat inside source route-map POLNAT interface gi 0/0/1 overload
+!
+!
 NTP: NETWORK TIME PROTOCOL
 DHCP: DI AKO BOBO
 SSH: SECURE SHELL: CIA: confidentility,Integrity,Availablity
@@ -598,9 +614,7 @@ DEBUG COMMANDS
 DEBUG COMMANDS
 =============================================================
 
-          
-http://docwiki.cisco.com/wiki/Cisco~~IOS~~Voice~~Troubleshooting~~and~~Monitoring~~--~~Tcl~~IVR~~Troubleshooting
-
+    
 debug voice application ?
 debug voice application error
 debug voice application script
@@ -671,4 +685,5 @@ exit
           
 sip-ua
 sip-server ipv4:192.168.k.1
+
 
