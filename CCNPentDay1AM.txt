@@ -80,6 +80,8 @@ Int Range fa0/10-12
  no shutdown
  switchport trunk Encap Dot1Q
  switchport mode trunk
+ switchport trunk allowed vlan all
+ switchport trunk native vlan 1
  do sh int trunk
 end
 
@@ -112,6 +114,7 @@ ip dhcp pool WIFIDATA
    default-router 10.~~.10.4
    domain-name WIFIDATA.COM
    dns-server 10.~~.1.10
+   option 43 ip 10.~~.1.7
 ip dhcp pool IPCCTV
    network 10.~~.50.0 255.255.255.0
    default-router 10.~~.50.4
@@ -125,6 +128,16 @@ ip dhcp pool VOICEVLAN
    option 150 ip 10.~~.100.8   
    END
 
+!!VTP OR VLAN TRUNKING PROTOCOL:
+VTP SERVER AND VTP CLIENT:
+TAAS/BABA:
+CONFIG T
+vtp domain ccnp
+vtp password encor
+vtp mode server
+exit
+sh vtp status
+
 !!CREATING AND PLACING PORTS INSIDEAVLAN:
 ( LINE 103 to 141 PASTE TO COREBABA SWITCH )
 config t
@@ -133,11 +146,11 @@ vlan 10
 vlan 50
    name IPCCTVLAN
 vlan 69
-   name DELETEME
+   name nameMO
 vlan 70
-    name SELLME
+    name FAVEcolor
 vlan 71
-    name HR
+    name HR-fu
 vlan 100
    name VOICEVLAN
 Int Fa 0/2
@@ -246,18 +259,18 @@ ephone-dn 7
 ephone-dn 8
   number ~~88
  ephone-dn 9
-   number ~~99
+   number ~~27
 ephone-dn 10
- number ~~98
+  number ~~98
 Ephone 1
   Mac-address cafe.face.baba
   type 8945
-  button 1:8 2:7 3:6 4:5
+  button 1:8 2:7 3:6 4:9
   restart
 Ephone 2
   Mac-address fafa.caca.baba
   type 8945
-  button 1:4 2:3 3:2 4:1
+  button 1:4 2:3 3:2 4:10
   restart  
 end
 
@@ -275,14 +288,14 @@ ephone 2
    call start slow
 end
 
-!!@@allow incoming calls
+!!@@allow incoming calls: ZERO TRUST PHILISOPHY: no IN, no Outgoing.
 configure terminal
 voice service voip
 ip address trusted list
 ipv4 0.0.0.0 0.0.0.0
 exit
 
-!OUTGOING CALL FROM CUCM TO OTHER CUCM.
+!OUTGOING CALL FROM CUCM TO OTHER CUCM. DONT CALL YOURSELF.
 configure terminal
  dial-peer voice 11 Voip
  destination-pattern 11..
@@ -410,10 +423,16 @@ router-id 10.~~.~~.4
 network 10.~~.0.0  0.0.255.255 area 0
 int gi 0/1
  ip ospf network point-to-point
+int Vlan 100
+ ip ospf 1 area 0
+ ip ospf priority 255
 end
 
 @CUCM:
 config t
+Int fa 0/0
+ ip ospf 1 area 0
+ ip ospf priority 0
 router ospf 1
 router-id 10.~~.100.8
 network 10.~~.100.0  0.0.0.255  area 0
@@ -686,4 +705,19 @@ exit
 sip-ua
 sip-server ipv4:192.168.k.1
 
+conf t
+ username admin privilege 15 secret pass
+ aaa new-model
+ radius server WINRAD
+  address ipv4 10.m.1.8 auth-port 1812 acct-port 1813
+  key keykeymo
+  exit
+ aaa group server radius RADGROUP
+  server name WINRAD
+  exit
+ aaa authentication login default group RADGROUP local
+ aaa authorization exec default group RADGROUP local
+ line vty 0 14
+  login authentication default
+ nd
 
